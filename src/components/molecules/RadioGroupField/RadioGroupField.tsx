@@ -51,6 +51,8 @@ const RadioGroupField = ({
 }: RadioGroupFieldProps) => {
   const { value: defaultValue } = items.find(({ defaultChecked }) => defaultChecked) || {};
 
+  console.log('hi');
+
   const [innerValue, setInnerValue] = useState(defaultValue);
 
   const isControlled = !!value;
