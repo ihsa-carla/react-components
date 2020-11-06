@@ -8,7 +8,10 @@ export type Styling = 'primary' | 'secondary' | 'link';
 export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   styling?: Styling;
   disabled?: boolean;
+  // TODO: Remove this prop when we deprecate styled-components < 5.1
   loading?: boolean;
+  // Transient prop: https://styled-components.com/docs/api#transient-props
+  $loading?: boolean;
   fullWidth?: boolean;
   type?: 'button' | 'submit' | 'reset';
 }
@@ -70,8 +73,8 @@ export const buttonStyle = css<ButtonProps>`
   ${({ disabled, styling = 'primary' }) => {
     const disabledStyles = css<ButtonProps>`
       cursor: not-allowed;
-      ${({ loading }) => {
-        if (!loading) {
+      ${({ loading, $loading }) => {
+        if (!loading || !$loading) {
           return css`
             background: ${colors.greyLightest};
             color: ${colors.grey};
@@ -100,11 +103,17 @@ const ButtonWrapper = styled.button.attrs(({ loading, fullWidth, ...rest }: Butt
   ${buttonStyle}
 `;
 
-const Button: React.FC<ButtonProps> = ({ children, loading, styling = 'primary', disabled, ...rest }) => {
-  const isLoading = styling !== 'link' ? loading : undefined;
+const Button: React.FC<ButtonProps> = ({ children, loading, $loading, styling = 'primary', disabled, ...rest }) => {
+  const isLoading = styling !== 'link' ? loading || $loading : undefined;
 
   return (
-    <ButtonWrapper styling={styling} loading={isLoading} disabled={isLoading || disabled} {...rest}>
+    <ButtonWrapper
+      styling={styling}
+      loading={isLoading}
+      $loading={isLoading}
+      disabled={isLoading || disabled}
+      {...rest}
+    >
       {isLoading && (
         <>
           <Spinner styling={styling === 'primary' ? 'negative' : 'secondary'} size="small" /> {'\u00A0 '}

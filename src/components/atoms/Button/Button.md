@@ -59,10 +59,13 @@ import { Button, FlexRow, FlexCol, FlexContainer } from '@zopauk/react-component
 
 <FlexContainer>
   <FlexRow>
-    <FlexCol xs={6}>
+    <FlexCol xs={3}>
       <Button loading>Loading</Button>
     </FlexCol>
-    <FlexCol xs={6}>
+    <FlexCol xs={3}>
+      <Button $loading>Loading or SC 5.1</Button>
+    </FlexCol>
+    <FlexCol xs={3}>
       <Button styling="secondary" loading>
         Waiting
       </Button>
